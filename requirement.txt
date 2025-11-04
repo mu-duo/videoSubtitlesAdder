@@ -1,0 +1,6 @@
+torch
+torchaudio<2.9.0
+soundfile
+silero-vad
+ffmpeg-python
+requests
