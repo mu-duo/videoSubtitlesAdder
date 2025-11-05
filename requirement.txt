@@ -4,3 +4,5 @@ soundfile
 silero-vad
 ffmpeg-python
 requests
+
+tqdm

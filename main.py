@@ -1,5 +1,6 @@
 import os
 import sys
+from tqdm import tqdm
 from pathlib import Path
 from utils import VedioSrtAdder
 
@@ -17,5 +18,5 @@ if __name__ == "__main__":
     for f in todo:
         vsa.run(f)
     else:
-        for f in files:
+        for f in tqdm(files):
             vsa.run(f)
