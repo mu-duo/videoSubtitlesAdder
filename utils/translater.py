@@ -1,4 +1,6 @@
 import requests
+from tqdm import tqdm
+from loguru import logger
 from .config import TRANSLATER_CONFIG, API_KEY
 
 
@@ -53,14 +55,16 @@ class Translater:
             raise Exception(f"网络请求错误: {str(e)}")
 
     def batch_translate(self, texts: list, **kwargs) -> list:
+        logger.info("start translate video.")
+
         results = []
-        for [text, start_time, end_time] in texts:
+        for [text, start_time, end_time] in tqdm(texts):
             try:
                 translated = self.translate(text, **kwargs)
                 results.append((translated, start_time, end_time))
             except Exception as e:
                 # results.append(f"翻译失败: {str(e)}")
-                print(f"翻译失败: {str(e)}")
+                logger.error(f"翻译失败: {str(e)}")
                 results.append((text, start_time, end_time))
         return results
 

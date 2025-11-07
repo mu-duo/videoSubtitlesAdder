@@ -1,4 +1,6 @@
 import requests
+from tqdm import tqdm
+from loguru import logger
 from .config import ASR_CONFIG, API_KEY
 
 
@@ -38,9 +40,7 @@ class AutomaticSpeechRecognizer:
             "target": target_language,
         }
         try:
-            response = requests.post(
-                "https://libretranslate.de/translate", data=data
-            )
+            response = requests.post("https://libretranslate.de/translate", data=data)
             response.raise_for_status()
             return response.json().get("translatedText", "")
         except requests.exceptions.HTTPError as err:
@@ -50,8 +50,9 @@ class AutomaticSpeechRecognizer:
     def getVoiceInfo(self, audio_info_list):
         # audio_info_list: (audio, start_time, end_time)
 
+        logger.info("start convert audio to text.")
         results = []
-        for audio, start_time, end_time in audio_info_list:
+        for audio, start_time, end_time in tqdm(audio_info_list):
             # tans audio to wav bytes
             response = self.audioTotext(audio)
             if response:
